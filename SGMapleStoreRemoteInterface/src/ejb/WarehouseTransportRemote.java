@@ -22,7 +22,9 @@ public interface WarehouseTransportRemote {
     public boolean createInventoryCategory(String newCategoryName,String newCategoryDesc,ArrayList<String> sCats);
     public List<Vector> viewAllInventoryCategories();
     public void modifyInventoryCategory(String categoryName,String updatedCategoryDesc,ArrayList<String> sCats);
-
+    public List<Vector> viewPaidSO();
+    public List<Vector> viewOutSO();
+    public void massManualReconciliation(ArrayList<Vector> manualRec);
     public List<Vector> viewSalesOrderlist();
     public boolean createItem(String itemImageDirPath, String itemSKU, String itemName, String itemDescription, String itemQuantity, String itemReorderLevel, String itemSellingPrice, String vendorID, String vendorProductCode);
     public ArrayList<ArrayList> viewItemList();

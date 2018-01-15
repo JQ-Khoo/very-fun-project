@@ -1,6 +1,5 @@
 package servlet;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -380,6 +379,22 @@ public class SGMapleStoreServlet extends HttpServlet {
             }
             else if(pageAction.equals("goToTrackOrder")) {
                 pageAction = "TrackOrder";
+            }
+            else if(pageAction.equals("goToPaidSO")) {
+                generatePaidSO(request);
+                pageAction = "PaidSO";
+            }
+            else if(pageAction.equals("goToOutstandingSO")) {
+                generateOutSO(request);
+                pageAction = "OutstandingSO";
+            }
+            else if(pageAction.equals("manualReconciliation")) {
+                manualReconciliation(request);
+                generatePaidSO(request);
+                pageAction = "PaidSO";
+            }
+            else if(pageAction.equals("goToAutoReconciliation")) {
+                pageAction = "AutoReconciliation";
             }
             else if(pageAction.equals("createItem")){
                 request.setAttribute("employeeNRIC", userNRIC);
@@ -769,6 +784,36 @@ public class SGMapleStoreServlet extends HttpServlet {
             }
         }
         return null;
+    }
+    
+    private void generatePaidSO(HttpServletRequest request) {
+        request.setAttribute("paidSOList", (ArrayList) wtr.viewPaidSO());
+    }
+    
+    private void generateOutSO(HttpServletRequest request) {
+        request.setAttribute("outSOList", (ArrayList) wtr.viewOutSO());
+    }
+    
+    private void manualReconciliation(HttpServletRequest request) {
+        if (request.getParameter("size")==null){
+            System.out.println("manualRecon size error");
+        }else{
+            ArrayList<Vector> manualRec = new ArrayList<>();
+            for (int i = 0; i < Integer.parseInt(request.getParameter("size"));i++){
+                if(request.getParameter("txn"+i).length()>1){
+                    Vector item = new Vector();
+                    String soNumber = request.getParameter("so"+i);
+                    String txnNumber = request.getParameter("txn"+i);
+                    System.out.println("Manual Recon"+soNumber+" "+txnNumber);
+                    item.add(request.getParameter("so"+i));
+                    item.add(request.getParameter("txn"+i));
+                    manualRec.add(item);
+                }
+            }
+            if(manualRec.size()>=1){
+                wtr.massManualReconciliation(manualRec);
+            }
+        }
     }
     
     private boolean createInventoryCategory(HttpServletRequest request) {

@@ -40,6 +40,9 @@
     <servlet><servlet-name>StoreLogin</servlet-name><jsp-file>/webapp/store/StoreLogin.jsp</jsp-file></servlet>
     <servlet><servlet-name>TermsCondition</servlet-name><jsp-file>/webapp/store/TermsCondition.jsp</jsp-file></servlet>
     <servlet><servlet-name>TrackOrder</servlet-name><jsp-file>/webapp/store/TrackOrder.jsp</jsp-file></servlet>
+    <servlet><servlet-name>PaidSO</servlet-name><jsp-file>/webapp/warehousetransport/PaidSO.jsp</jsp-file></servlet>
+    <servlet><servlet-name>OutstandingSO</servlet-name><jsp-file>/webapp/warehousetransport/OutstandingSO.jsp</jsp-file></servlet>
+    <servlet><servlet-name>AutoReconciliation</servlet-name><jsp-file>/webapp/warehousetransport/AutoReconciliation.jsp</jsp-file></servlet>
     
     <servlet-mapping>
         <servlet-name>SGMapleStore</servlet-name>
@@ -81,7 +84,11 @@
     <servlet-mapping><servlet-name>StoreLogin</servlet-name><url-pattern>/webapp/store/StoreLogin</url-pattern></servlet-mapping>
     <servlet-mapping><servlet-name>TermsCondition</servlet-name><url-pattern>/webapp/store/TermsCondition</url-pattern></servlet-mapping>
     <servlet-mapping><servlet-name>TrackOrder</servlet-name><url-pattern>/webapp/store/TrackOrder</url-pattern></servlet-mapping>
-
+    <servlet-mapping><servlet-name>PaidSO</servlet-name><url-pattern>/webapp/warehousetransport/PaidSO</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>OutstandingSO</servlet-name><url-pattern>/webapp/warehousetransport/OutstandingSO</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>AutoReconciliation</servlet-name><url-pattern>/webapp/warehousetransport/AutoReconciliation</url-pattern></servlet-mapping>
+    
+    
     <session-config><session-timeout>120</session-timeout></session-config>
     <welcome-file-list><welcome-file>webapp/store/Homepage.jsp</welcome-file></welcome-file-list>
 </web-app>

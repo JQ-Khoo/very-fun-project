@@ -22,7 +22,9 @@ import entity.SalesOrderEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.Date;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 @Stateless
@@ -457,6 +459,82 @@ public class SGMapleStoreMgrBean implements CommonInfrastructureRemote, Warehous
         }
         return salesOrderList;
     }
+    
+    @Override
+    public List<Vector> viewPaidSO(){
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DecimalFormat decfor = new DecimalFormat("0.00");
+        Query q = em.createQuery("SELECT s FROM SalesOrder s WHERE s.isPaid=true");
+        List<Vector> paidSalesOrderList = new ArrayList<Vector>();
+        
+        for(Object o: q.getResultList()){
+            SalesOrderEntity salesOrder = (SalesOrderEntity) o;
+            Vector soVec = new Vector();
+            soVec.add(salesOrder.getSalesOrderNumber().toString());
+            soVec.add(salesOrder.getInvoice().getInvoiceNum().toString());
+            soVec.add(salesOrder.getInvoice().getPaymentReferenceNum());
+            soVec.add(decfor.format(salesOrder.getTotalPrice()+salesOrder.getShippingAmt()-salesOrder.getDiscountAmt()));
+            soVec.add(""+df.format(salesOrder.getInvoice().getDateTime()));
+            soVec.add(salesOrder.getInvoice().getCustomerNotes());
+            paidSalesOrderList.add(soVec);
+        }
+        return paidSalesOrderList;
+    }
+    
+
+    @Override
+    public List<Vector> viewOutSO(){
+        DecimalFormat decfor = new DecimalFormat("0.00");
+        Query q = em.createQuery("SELECT s FROM SalesOrder s WHERE s.isPaid=false");
+        List<Vector> outstandingSalesOrderList = new ArrayList<Vector>();
+        
+        for(Object o: q.getResultList()){
+            SalesOrderEntity salesOrder = (SalesOrderEntity) o;
+            ContactEntity cus = (ContactEntity) salesOrder.getCustomer();
+            Vector soVec = new Vector();
+            soVec.add(salesOrder.getSalesOrderNumber().toString());
+            soVec.add(decfor.format(salesOrder.getTotalPrice()+salesOrder.getShippingAmt()-salesOrder.getDiscountAmt()));
+            soVec.add(salesOrder.getStatus());
+            soVec.add(""+cus.getContactSalutation()+" "+cus.getContactFirstName()+ " "+cus.getContactLastName());
+            soVec.add(cus.getContactEmail());
+            soVec.add(cus.getContactPhone());
+            outstandingSalesOrderList.add(soVec);
+        }
+            return outstandingSalesOrderList;
+    }
+    
+    @Override
+    public void massManualReconciliation(ArrayList<Vector> manualRec){
+        int size = manualRec.size();
+        for (int i = 0; i < size; i++){
+            Vector item = (Vector) manualRec.get(i);
+            reconcile((String)item.get(0), (String) item.get(1));
+        }
+    }
+    
+    private void reconcile(String soNum, String txnNum){
+        Query q = em.createQuery("SELECT s FROM SalesOrder s WHERE s.salesOrderNumber= :number");
+        Long soNumber = Long.parseLong(soNum);
+        q.setParameter("number", soNumber);
+        SalesOrderEntity so = (SalesOrderEntity) q.getSingleResult();
+        InvoiceEntity invoice1 = new InvoiceEntity();
+        invoice1.setActive(true);
+        invoice1.setCustomerNotes(so.getDeliveryNotes());
+        invoice1.setContactUsername(so.getCustomer().getContactUsername());
+        invoice1.setBillingAddress(so.getCustomer().getContactBillingAddress());
+        invoice1.setShippingAddress(so.getCustomer().getContactShippingAddress());
+        invoice1.setContactNum(so.getCustomer().getContactID());
+        invoice1.setPaymentReferenceNum(txnNum);
+        invoice1.setDiscountAmt(so.getDiscountAmt());
+        invoice1.setShippingAmt(so.getShippingAmt());
+        invoice1.setDate(new Date());
+        invoice1.setStatus("Paid");
+        so.setIsPaid(true);
+        so.setInvoice(invoice1);
+        em.persist(invoice1);
+        em.persist(so);
+    }
+    
     
     @Override
     public ArrayList<ArrayList> viewItemList(){

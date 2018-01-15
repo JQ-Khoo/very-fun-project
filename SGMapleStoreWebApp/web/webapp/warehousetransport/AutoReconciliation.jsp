@@ -1,32 +1,34 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.ArrayList" %>
+<%@page import="java.util.Vector"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>SG MapleStore - Dashboard</title>
-        
+        <title>SG MapleStore - Auto Reconciliation</title>
+
         <!-- Cascading Style Sheet (CSS) -->
         <link href="css/commoninfrastructure/baselayout/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="css/commoninfrastructure/baselayout/basetemplate.css" rel="stylesheet" type="text/css">
         <link href="css/commoninfrastructure/baselayout/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="css/commoninfrastructure/weblayout/CommonCSS.css" rel="stylesheet" type="text/css">
-        
+
         <!-- Java Script (JS) -->
-        <script src="js/commoninfrastructure/basejs/bootstrap.min.js" type="text/javascript"></script>
         <script src="js/commoninfrastructure/basejs/jquery.min.js" type="text/javascript"></script>
-        <script src="js/commoninfrastructure/basejs/metisMenu.min.js" type="text/javascript"></script>
         <script src="js/commoninfrastructure/basejs/jquery.newsTicker.js" type="text/javascript"></script>
+        <script src="js/commoninfrastructure/basejs/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/commoninfrastructure/basejs/metisMenu.min.js" type="text/javascript"></script>
         <script src="js/commoninfrastructure/webjs/CommonJS.js" type="text/javascript"></script>
+        <script src="js/warehousetransport/webjs/ItemListJS.js" type="text/javascript"></script>
     </head>
     <body onload="establishTime(); setInterval('updateTime()', 1000)">
         <div id="wrapper">
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0;">
                 <a class="navbar-brand" href="SGMapleStore?pageTransit=goToDashboard">
-                    <!-- <img src="images/landing/moneymind_logo.png" /> -->
                     SG MapleStore
                 </a>
-                
+
                 <!-- Top Navigation -->
                 <div id="pageAnnouncement">
                     <div class="ccr-last-update">
@@ -49,9 +51,9 @@
                     <li class="divider"></li>
                     <li><a href="SGMapleStore?pageTransit=goToLogout"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;Logout</a></li>
                 </ul>
-            
+
                 <!-- Left Navigation -->
-                <div class="navbar-default sidebar" role="navigation">
+                <div class="navbar-default sidebar">
                     <div class="sidebar-nav navbar-collapse">
                         <ul class="nav" id="side-menu">
                             <li>
@@ -101,24 +103,29 @@
                             <li><a href="SGMapleStore?pageTransit=goToFirstHouse"><i class="fa fa-list-alt fa-fw"></i>&nbsp;&nbsp;Bills</a></li>
                             <li>&nbsp;</li>
                             <li><a href="SGMapleStore?pageTransit=goToFirstHouse"><i class="fa fa-line-chart fa-fw"></i>&nbsp;&nbsp;Reports</a></li>
-                            <li>
-                                <a href="#"><i class="fa fa-book fa-fw"></i>&nbsp;&nbsp;FA Module<span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">
-                                    <li><a href="SGMapleStore?pageTransit=goToOutstandingSO"><i class="fa fa-cube fa-fw"></i>&nbsp;&nbsp;Outstanding Sales Orders</a></li>
-                                    <li><a href="SGMapleStore?pageTransit=goToPaidSO"><i class="fa fa fa-cubes fa-fw"></i>&nbsp;&nbsp;Paid Sales Orders</a></li>
-                                </ul>
-                            </li>
                         </ul>
                     </div>
                 </div>
             </nav>
-
             <!-- Content Space -->
             <div id="page-wrapper">
-                <div class="row">
-                    
+                <div class="contentFill contentLayout" style="padding-top: 20px; height: 65px;">
+                    <h3 style="display: inline;">Upload File for Automated Reconciliation</h3>
+                    <button class="btn btn-primary pull-right" style="margin-right: 20px; vertical-align: middle">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;Upload File for Automatic Reconciliation
+                    </button>
                 </div>
+                <div style="padding-left:20px; padding-top:20px">
+                Explain stuff here<br>
+                And here<br>
+                and here explain formatting and whatever<br>
+                </div>
+                    <label for="file-upload" style="margin-top: 20px; margin-left: 7px">
+                        <button type="button" class="btn btn-primary " onclick="$('#file-upload').click();"><span class="glyphicon glyphicon-open"></span> Upload File</button>
+                    </label>
             </div>
         </div>
-    </body>
+    </div>
+</div>
+</body>
 </html>
